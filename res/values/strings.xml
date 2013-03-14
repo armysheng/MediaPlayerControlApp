@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Media Player Control</string>
+    
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="stop">Stop</string>
+    <string name="next">Next</string>
+    <string name="prev">Prev</string>
+    
+    <string name="shuffle">Shuffle</string>
+    <string name="repeat">Repeat</string>
+    
+    <string name="volume">Volume</string>
+    
+    <string name="currentSong">current song</string>
+    
+    <string name="ip_address">10.0.1.145</string>
+    
+    <string name="send">Send</string>
+    
+    <string name="update">Update</string>
+</resources>
