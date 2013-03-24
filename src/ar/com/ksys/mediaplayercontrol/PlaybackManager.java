@@ -1,8 +1,11 @@
 package ar.com.ksys.mediaplayercontrol;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import ar.com.ksys.mediaplayercontrol.PlayerCommands.*;
 
-public class PlaybackManager {
+public class PlaybackManager extends Observable implements Observer {
 	private CommandManager cm;
 	private Song currentSong;
 	private boolean is_playing;
@@ -65,28 +68,19 @@ public class PlaybackManager {
 		return is_shuffle;
 	}
 	
-	public void setShuffle(boolean is_shuffle) {
-		this.is_shuffle = is_shuffle;
-	}
-	
 	public void setShuffle(boolean is_shuffle, boolean update) {
-		setShuffle(is_shuffle);
-		if( update ) {
+		this.is_shuffle = is_shuffle;
+		if( update )
 			cm.sendCommandToPlayer( new SetShuffleCommand(), 
 									is_shuffle ? "true" : "false");
-		}
 	}
 	
 	public boolean isRepeat() {
 		return is_repeat;
 	}
 	
-	public void setRepeat(boolean is_repeat) {
-		this.is_repeat = is_repeat;
-	}
-	
 	public void setRepeat(boolean is_repeat, boolean update) {
-		setRepeat(is_repeat);
+		this.is_repeat = is_repeat;
 		if( update )
 			cm.sendCommandToPlayer( new SetRepeatCommand(),
 									is_repeat ? "true" : "false");
@@ -96,30 +90,25 @@ public class PlaybackManager {
 		return volume;
 	}
 	
-	public void setVolume(int volume) {
-		this.volume = volume;
-	}
-	
 	public void setVolume(int volume, boolean update) {
-		setVolume(volume);
-		if( update ) {
+		this.volume = volume;
+		if( update )
 			cm.sendCommandToPlayer(new SetVolumeCommand(), String.valueOf(volume));
-		}
 	}
 	
 	public int getTime() {
 		return time;
 	}
 	
-	public void setTime(int time) {
-		this.time = time;
-	}
-	
 	public void setTime(int time, boolean update) {
-		setTime(time);
-		if( update ) {
+		this.time = time;
+		if( update )
 			cm.sendCommandToPlayer(new JumpToTimeCommand(), String.valueOf(time));
-			//cm.sendCommandToPlayer(new CurrentTimeCommand(this));
-		}
+	}
+
+	@Override
+	public void update(Observable observable, Object data) {
+		setChanged();
+		notifyObservers();
 	}
 }

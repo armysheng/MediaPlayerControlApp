@@ -86,7 +86,7 @@ public class PlayerCommands
 		@Override
 		public void execute()
 		{
-			manager.setVolume( Integer.parseInt(getResponse()) );
+			manager.setVolume( Integer.parseInt(getResponse()), false );
 		}
 
 		@Override
@@ -162,7 +162,7 @@ public class PlayerCommands
 		@Override
 		public void execute()
 		{
-			manager.setShuffle( getResponse().equalsIgnoreCase("true") );
+			manager.setShuffle( getResponse().equalsIgnoreCase("true"), false );
 		}
 		
 		@Override
@@ -187,7 +187,7 @@ public class PlayerCommands
 		@Override
 		public void execute()
 		{
-			manager.setRepeat( getResponse().equalsIgnoreCase("true") );
+			manager.setRepeat( getResponse().equalsIgnoreCase("true"), false );
 		}
 
 		@Override
@@ -260,7 +260,7 @@ public class PlayerCommands
 		@Override
 		public void execute()
 		{
-			manager.setTime( Integer.parseInt(getResponse()) );
+			manager.setTime( Integer.parseInt(getResponse()), false );
 		}
 		
 		@Override

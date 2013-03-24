@@ -13,6 +13,7 @@ public class MainActivity extends Activity
 	
 	private CommandManager cm;
 	private UiUpdater uiUpdater;
+	private TimerHandler timer;
 	private PlaybackManager playback;
 	public ArrayAdapter<String> playlistAdapter;
 	
@@ -23,10 +24,14 @@ public class MainActivity extends Activity
         setContentView(R.layout.main);
         
         EditText editIpAddress = (EditText)findViewById(R.id.editIpAddress);
-        cm = new CommandManager(editIpAddress.getText().toString(), PORT);
         
+        cm = new CommandManager(editIpAddress.getText().toString(), PORT);
         playback = new PlaybackManager(cm);
-        uiUpdater = new UiUpdater(playback, this);
+        uiUpdater = new UiUpdater(this);
+        timer = new TimerHandler();
+        
+        playback.addObserver(uiUpdater);
+        timer.addObserver(playback);
         
         playlistAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         ListView playlist = (ListView)findViewById(R.id.listPlaylist);
@@ -133,14 +138,14 @@ public class MainActivity extends Activity
     @Override
     public void onResume() 
     {
-    	uiUpdater.start();
+    	timer.start();
     	super.onResume();
     }
     
     @Override
     public void onPause() 
     {
-    	uiUpdater.stop();
+    	timer.stop();
     	super.onPause();
     }
 }

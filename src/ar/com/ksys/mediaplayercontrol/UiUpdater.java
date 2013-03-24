@@ -1,40 +1,14 @@
 package ar.com.ksys.mediaplayercontrol;
 
-import java.lang.ref.WeakReference;
+import java.util.Observable;
+import java.util.Observer;
 
 import android.app.Activity;
-import android.os.Handler;
-import android.os.Message;
 import android.widget.*;
 
-public class UiUpdater extends Handler
+public class UiUpdater implements Observer
 {
-	private boolean active;
-	private int interval = 1000;
-	private MyHandler handler;
-	private PlaybackManager playbackManager;
 	private UiContainer container;
-	
-	// When Handler is an inner class it must be static, otherwise
-	// there can be memory leaks. So I need another way to access the
-	// UiUpdater from inside MyHandler. I could simply have had UiUpdater
-	// inherit from Handler, but I wanted it encapsulated.
-	private static class MyHandler extends Handler {
-		private final WeakReference<UiUpdater> uiUpdaterRef;
-		
-		MyHandler(UiUpdater u) {
-			uiUpdaterRef = new WeakReference<UiUpdater>(u);
-		}
-		
-		@Override
-		public void handleMessage(Message msg) {
-			UiUpdater ui = uiUpdaterRef.get();
-			ui.updateUi();
-			if(ui.isActive()) {
-				sendEmptyMessageDelayed(0, ui.getInterval());
-			}
-		}	
-	};
 	
 	private class UiContainer {
 		public CheckBox checkRepeat;
@@ -66,20 +40,18 @@ public class UiUpdater extends Handler
 		return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
 	}
 	
-	public UiUpdater(PlaybackManager playbackManager, Activity activity) 
+	public UiUpdater(Activity activity) 
 	{
-		handler = new MyHandler(this);
-		this.playbackManager = playbackManager;
 		container = new UiContainer(activity);
 	}
 	
-	public void updateUi() {
-		int songPos = playbackManager.getTime() / 1000;
-		Song song = playbackManager.getCurrentSong();
+	public void updateUi(PlaybackManager playback) {
+		int songPos = playback.getTime() / 1000;
+		Song song = playback.getCurrentSong();
 		
-		container.checkRepeat.setChecked( playbackManager.isRepeat() );
-		container.checkShuffle.setChecked( playbackManager.isShuffle() );
-		container.volumeBar.setProgress( playbackManager.getVolume() );
+		container.checkRepeat.setChecked( playback.isRepeat() );
+		container.checkShuffle.setChecked( playback.isShuffle() );
+		container.volumeBar.setProgress( playback.getVolume() );
 		container.songPosBar.setProgress( songPos );
 		container.textCurTime.setText( timeString(songPos) );		
 		container.textPos.setText( song.getTrackNumber() + 1 + "." );
@@ -87,27 +59,9 @@ public class UiUpdater extends Handler
 		container.textSongLength.setText( timeString(song.getLength()) );
 		container.songPosBar.setMax( song.getLength() );
 	}
-	
-	public void start()
-	{
-		if(active)
-			return;
-		active = true;
-		handler.sendEmptyMessageDelayed(0, interval);
-	}
-	
-	public void stop()
-	{
-		active = false;
-	}
-	
-	public boolean isActive()
-	{
-		return active;
-	}
-	
-	public int getInterval()
-	{
-		return interval;
+
+	@Override
+	public void update(Observable observable, Object data) {
+		updateUi( (PlaybackManager)observable );
 	}
 }
