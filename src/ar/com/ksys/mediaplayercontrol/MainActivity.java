@@ -22,7 +22,7 @@ public class MainActivity extends Activity
         setContentView(R.layout.main);
         
         EditText editIpAddress = (EditText)findViewById(R.id.editIpAddress);
-        cm = new CommandManager(this, editIpAddress.getText().toString(), PORT);
+        cm = new CommandManager(editIpAddress.getText().toString(), PORT);
         
         playbackStatus = new PlaybackStatus();
         uiUpdater = new UiUpdater(playbackStatus, this);

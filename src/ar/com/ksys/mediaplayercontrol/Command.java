@@ -1,7 +1,5 @@
 package ar.com.ksys.mediaplayercontrol;
 
-import android.app.Activity;
-
 public abstract class Command 
 {
 	private String args = new String();
@@ -9,7 +7,7 @@ public abstract class Command
 	
 	public abstract String name();
 
-	public void execute(Activity activity) { };
+	public void execute() { };
 	
 	public boolean needsResponse()
 	{ 

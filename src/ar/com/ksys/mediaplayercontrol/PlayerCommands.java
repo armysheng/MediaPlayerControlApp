@@ -1,6 +1,5 @@
 package ar.com.ksys.mediaplayercontrol;
 
-import android.app.Activity;
 import android.widget.*;
 
 public class PlayerCommands 
@@ -85,10 +84,8 @@ public class PlayerCommands
 		}
 		
 		@Override
-		public void execute(Activity activity)
+		public void execute()
 		{
-			//SeekBar volumeBar = (SeekBar)activity.findViewById(R.id.volumeBar);
-			//volumeBar.setProgress( Integer.parseInt( getResponse() ) );
 			status.setVolume( Integer.parseInt(getResponse()) );
 		}
 
@@ -113,10 +110,8 @@ public class PlayerCommands
 		}
 		
 		@Override
-		public void execute(Activity activity)
+		public void execute()
 		{
-			//TextView textView = (TextView)activity.findViewById(R.id.textCurrentSong);
-			//textView.setText( getResponse() );
 			song.setTitle( getResponse() );
 		}
 		
@@ -140,11 +135,8 @@ public class PlayerCommands
 		}
 		
 		@Override
-		public void execute(Activity activity)
+		public void execute()
 		{
-//			TextView textCurrentPos = (TextView)activity.findViewById(R.id.textCurrentPos);
-//			int reponse = Integer.parseInt(getResponse()) + 1;
-//			textCurrentPos.setText( String.valueOf(reponse) + ".");
 			song.setTrackNumber( Integer.parseInt(getResponse()) );
 		}
 		
@@ -168,10 +160,8 @@ public class PlayerCommands
 		}
 		
 		@Override
-		public void execute(Activity activity)
+		public void execute()
 		{
-//			CheckBox checkShuffle = (CheckBox)activity.findViewById(R.id.checkShuffle);
-//			checkShuffle.setChecked(getResponse().equalsIgnoreCase("true"));
 			status.setShuffle( getResponse().equalsIgnoreCase("true") );
 		}
 		
@@ -195,10 +185,8 @@ public class PlayerCommands
 		}
 		
 		@Override
-		public void execute(Activity activity)
+		public void execute()
 		{
-//			CheckBox checkRepeat = (CheckBox)activity.findViewById(R.id.checkRepeat);
-//			checkRepeat.setChecked(getResponse().equalsIgnoreCase("true"));
 			status.setRepeat( getResponse().equalsIgnoreCase("true") );
 		}
 
@@ -228,7 +216,7 @@ public class PlayerCommands
 		}
 		
 		@Override
-		public void execute(Activity activity)
+		public void execute()
 		{
 			String response = getResponse();
 			int separatorPos = response.indexOf(",");
@@ -244,14 +232,6 @@ public class PlayerCommands
 				playlist.add( Integer.parseInt(getArgs()) + 1 + ". " + songTitle + "\t\t\t\t\t\t\t\t\t\t" + timeText);
 			} 
 			else {
-//				TextView textSongLength = (TextView)activity.findViewById(R.id.textSongLength);
-//				textSongLength.setText(timeText);
-//				
-//				TextView textCurrentSong = (TextView)activity.findViewById(R.id.textCurrentSong);
-//				textCurrentSong.setText(songTitle);
-//				
-//				SeekBar seekBar = (SeekBar)activity.findViewById(R.id.seekBarSongLength);
-//				seekBar.setMax(songLength);
 				song.setLength(songLength);
 				song.setTitle(songTitle);
 			}
@@ -278,17 +258,9 @@ public class PlayerCommands
 		}
 		
 		@Override
-		public void execute(Activity activity)
+		public void execute()
 		{
-			// time is in milliseconds
-			int time = Integer.parseInt( getResponse() );// / 1000;
-			
-//			TextView textSongTime = (TextView)activity.findViewById(R.id.textSongTime);
-//			textSongTime.setText( timeString(time) );
-//			
-//			SeekBar seekBar = (SeekBar)activity.findViewById(R.id.seekBarSongLength);
-//			seekBar.setProgress(time);
-			status.setTime(time);
+			status.setTime( Integer.parseInt(getResponse()) );
 		}
 		
 		@Override
