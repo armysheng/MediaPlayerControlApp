@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
+
 import ar.com.ksys.mediaplayercontrol.PlayerCommands.*;
 
 public class MainActivity extends Activity
@@ -12,7 +13,7 @@ public class MainActivity extends Activity
 	
 	private CommandManager cm;
 	private UiUpdater uiUpdater;
-	private PlaybackStatus playbackStatus;
+	private PlaybackManager playback;
 	public ArrayAdapter<String> playlistAdapter;
 	
     @Override
@@ -24,8 +25,8 @@ public class MainActivity extends Activity
         EditText editIpAddress = (EditText)findViewById(R.id.editIpAddress);
         cm = new CommandManager(editIpAddress.getText().toString(), PORT);
         
-        playbackStatus = new PlaybackStatus();
-        uiUpdater = new UiUpdater(playbackStatus, this);
+        playback = new PlaybackManager(cm);
+        uiUpdater = new UiUpdater(playback, this);
         
         playlistAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         ListView playlist = (ListView)findViewById(R.id.listPlaylist);
@@ -34,12 +35,7 @@ public class MainActivity extends Activity
         Button buttonUpdate = (Button)findViewById(R.id.buttonUpdate);
         buttonUpdate.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
-        		cm.sendCommandToPlayer(new VolumeCommand(playbackStatus));
-        		cm.sendCommandToPlayer(new CurrentPositionCommand( playbackStatus.getCurrentSong() ));
-        		cm.sendCommandToPlayer(new SongInfoCommand( playbackStatus.getCurrentSong() ));
-        		cm.sendCommandToPlayer(new CurrentTimeCommand(playbackStatus));
-        		cm.sendCommandToPlayer(new IsRepeatCommand(playbackStatus));
-        		cm.sendCommandToPlayer(new IsShuffleCommand(playbackStatus));
+        		playback.updateStatus();
         		
         		if(!playlistAdapter.isEmpty())
         			return;
@@ -54,14 +50,14 @@ public class MainActivity extends Activity
         CheckBox checkShuffle = (CheckBox)findViewById(R.id.checkShuffle);
         checkShuffle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				cm.sendCommandToPlayer(new SetShuffleCommand(), isChecked ? "true" : "false");
+				playback.setShuffle(isChecked, true);
 			}
 		});
         
         CheckBox checkRepeat = (CheckBox)findViewById(R.id.checkRepeat);
         checkRepeat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				cm.sendCommandToPlayer(new SetRepeatCommand() , isChecked ? "true" : "false");
+				playback.setRepeat(isChecked, true);
 			}
 		});
 
@@ -69,7 +65,7 @@ public class MainActivity extends Activity
         volumeBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
-				cm.sendCommandToPlayer(new SetVolumeCommand(), String.valueOf( seekBar.getProgress() ));				
+				playback.setVolume(seekBar.getProgress(), true);
 			}
 			
 			@Override
@@ -83,8 +79,7 @@ public class MainActivity extends Activity
         songPosBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
-				cm.sendCommandToPlayer(new JumpToTimeCommand(), String.valueOf(seekBar.getProgress() * 1000));
-				cm.sendCommandToPlayer(new CurrentTimeCommand( playbackStatus ));
+				playback.setTime(seekBar.getProgress() * 1000, true);
 			}
 			
 			@Override
@@ -98,7 +93,7 @@ public class MainActivity extends Activity
         buttonPlay.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				cm.sendCommandToPlayer(new PlayCommand());
+				playback.play();
 			}
 		});
         
@@ -106,7 +101,7 @@ public class MainActivity extends Activity
         buttonPause.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				cm.sendCommandToPlayer(new PlayPauseCommand());
+				playback.playPause();
 			}
 		});
         
@@ -114,7 +109,7 @@ public class MainActivity extends Activity
         buttonStop.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				cm.sendCommandToPlayer(new StopCommand());
+				playback.stop();
 			}
 		});
         
@@ -122,7 +117,7 @@ public class MainActivity extends Activity
         buttonNext.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				cm.sendCommandToPlayer(new NextCommand());
+				playback.next();
 			}
 		});
         
@@ -130,7 +125,7 @@ public class MainActivity extends Activity
         buttonPrev.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				cm.sendCommandToPlayer(new PrevCommand());
+				playback.prev();
 			}
 		});
     }

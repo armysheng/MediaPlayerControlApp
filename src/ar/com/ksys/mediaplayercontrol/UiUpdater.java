@@ -12,7 +12,7 @@ public class UiUpdater extends Handler
 	private boolean active;
 	private int interval = 1000;
 	private MyHandler handler;
-	private PlaybackStatus playbackStatus;
+	private PlaybackManager playbackManager;
 	private UiContainer container;
 	
 	// When Handler is an inner class it must be static, otherwise
@@ -66,20 +66,20 @@ public class UiUpdater extends Handler
 		return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
 	}
 	
-	public UiUpdater(PlaybackStatus playbackStatus, Activity activity) 
+	public UiUpdater(PlaybackManager playbackManager, Activity activity) 
 	{
 		handler = new MyHandler(this);
-		this.playbackStatus = playbackStatus;
+		this.playbackManager = playbackManager;
 		container = new UiContainer(activity);
 	}
 	
 	public void updateUi() {
-		int songPos = playbackStatus.getTime() / 1000;
-		Song song = playbackStatus.getCurrentSong();
+		int songPos = playbackManager.getTime() / 1000;
+		Song song = playbackManager.getCurrentSong();
 		
-		container.checkRepeat.setChecked( playbackStatus.isRepeat() );
-		container.checkShuffle.setChecked( playbackStatus.isShuffle() );
-		container.volumeBar.setProgress( playbackStatus.getVolume() );
+		container.checkRepeat.setChecked( playbackManager.isRepeat() );
+		container.checkShuffle.setChecked( playbackManager.isShuffle() );
+		container.volumeBar.setProgress( playbackManager.getVolume() );
 		container.songPosBar.setProgress( songPos );
 		container.textCurTime.setText( timeString(songPos) );		
 		container.textPos.setText( song.getTrackNumber() + 1 + "." );

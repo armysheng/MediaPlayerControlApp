@@ -77,16 +77,16 @@ public class PlayerCommands
     
 	public static class VolumeCommand extends Command
 	{
-		private PlaybackStatus status;
+		private PlaybackManager manager;
 		
-		public VolumeCommand(PlaybackStatus pbStatus) {
-			status = pbStatus;
+		public VolumeCommand(PlaybackManager pbManager) {
+			manager = pbManager;
 		}
 		
 		@Override
 		public void execute()
 		{
-			status.setVolume( Integer.parseInt(getResponse()) );
+			manager.setVolume( Integer.parseInt(getResponse()) );
 		}
 
 		@Override
@@ -153,16 +153,16 @@ public class PlayerCommands
 	
 	public static class IsShuffleCommand extends Command
 	{
-		private PlaybackStatus status;
+		private PlaybackManager manager;
 		
-		public IsShuffleCommand(PlaybackStatus pbStatus) {
-			status = pbStatus;
+		public IsShuffleCommand(PlaybackManager pbManager) {
+			manager = pbManager;
 		}
 		
 		@Override
 		public void execute()
 		{
-			status.setShuffle( getResponse().equalsIgnoreCase("true") );
+			manager.setShuffle( getResponse().equalsIgnoreCase("true") );
 		}
 		
 		@Override
@@ -178,16 +178,16 @@ public class PlayerCommands
 	
 	public static class IsRepeatCommand extends Command
 	{
-		private PlaybackStatus status;
+		private PlaybackManager manager;
 		
-		public IsRepeatCommand(PlaybackStatus pbStatus) {
-			status = pbStatus;
+		public IsRepeatCommand(PlaybackManager pbManager) {
+			manager = pbManager;
 		}
 		
 		@Override
 		public void execute()
 		{
-			status.setRepeat( getResponse().equalsIgnoreCase("true") );
+			manager.setRepeat( getResponse().equalsIgnoreCase("true") );
 		}
 
 		@Override
@@ -251,16 +251,16 @@ public class PlayerCommands
 	
 	public static class CurrentTimeCommand extends Command
 	{
-		private PlaybackStatus status;
+		private PlaybackManager manager;
 		
-		public CurrentTimeCommand(PlaybackStatus pbStatus) {
-			status = pbStatus;
+		public CurrentTimeCommand(PlaybackManager pbManager) {
+			manager = pbManager;
 		}
 		
 		@Override
 		public void execute()
 		{
-			status.setTime( Integer.parseInt(getResponse()) );
+			manager.setTime( Integer.parseInt(getResponse()) );
 		}
 		
 		@Override
