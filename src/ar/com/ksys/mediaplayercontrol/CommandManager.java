@@ -3,7 +3,6 @@ package ar.com.ksys.mediaplayercontrol;
 import android.app.Activity;
 import android.widget.*;
 import android.os.AsyncTask;
-import ar.com.ksys.mediaplayercontrol.PlayerCommands.*;
 
 public class CommandManager 
 {
@@ -30,7 +29,7 @@ public class CommandManager
 	}
 	
     /***
-     * Parse the response received from the server and executes the command
+     * Parses the response received from the server and executes the command
      * @param response String in the format "command,response"
      */
     private void parseResponse(Command cmd) {

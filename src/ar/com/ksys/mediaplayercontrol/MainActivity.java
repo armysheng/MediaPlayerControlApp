@@ -9,7 +9,11 @@ import ar.com.ksys.mediaplayercontrol.PlayerCommands.*;
 public class MainActivity extends Activity
 {
 	private static final int PORT = 9696;
+	
 	private CommandManager cm;
+	private UiUpdater uiUpdater;
+	private PlaybackStatus playbackStatus;
+	public ArrayAdapter<String> playlistAdapter;
 	
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -20,14 +24,30 @@ public class MainActivity extends Activity
         EditText editIpAddress = (EditText)findViewById(R.id.editIpAddress);
         cm = new CommandManager(this, editIpAddress.getText().toString(), PORT);
         
+        playbackStatus = new PlaybackStatus();
+        uiUpdater = new UiUpdater(playbackStatus, this);
+        
+        playlistAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+        ListView playlist = (ListView)findViewById(R.id.listPlaylist);
+        playlist.setAdapter(playlistAdapter);
+        
         Button buttonUpdate = (Button)findViewById(R.id.buttonUpdate);
         buttonUpdate.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
-        		cm.sendCommandToPlayer(new VolumeCommand());
-        		cm.sendCommandToPlayer(new CurrentPositionCommand());
-        		cm.sendCommandToPlayer(new SongTitleCommand());
-        		cm.sendCommandToPlayer(new IsRepeatCommand());
-        		cm.sendCommandToPlayer(new IsShuffleCommand());
+        		cm.sendCommandToPlayer(new VolumeCommand(playbackStatus));
+        		cm.sendCommandToPlayer(new CurrentPositionCommand( playbackStatus.getCurrentSong() ));
+        		cm.sendCommandToPlayer(new SongInfoCommand( playbackStatus.getCurrentSong() ));
+        		cm.sendCommandToPlayer(new CurrentTimeCommand(playbackStatus));
+        		cm.sendCommandToPlayer(new IsRepeatCommand(playbackStatus));
+        		cm.sendCommandToPlayer(new IsShuffleCommand(playbackStatus));
+        		
+        		if(!playlistAdapter.isEmpty())
+        			return;
+        		
+        		//playlistAdapter.clear();
+        		for(int i = 0; i < 30; i++) {
+        			cm.sendCommandToPlayer(new SongInfoCommand(playlistAdapter), String.valueOf(i));
+        		}
         	}
         });
         
@@ -49,7 +69,22 @@ public class MainActivity extends Activity
         volumeBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
-				cm.sendCommandToPlayer(new SetVolumeCommand(), String.valueOf( seekBar.getProgress()));				
+				cm.sendCommandToPlayer(new SetVolumeCommand(), String.valueOf( seekBar.getProgress() ));				
+			}
+			
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) { }
+			
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) { }
+		});
+        
+        SeekBar songPosBar = (SeekBar)findViewById(R.id.seekBarSongLength);
+        songPosBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				cm.sendCommandToPlayer(new JumpToTimeCommand(), String.valueOf(seekBar.getProgress() * 1000));
+				cm.sendCommandToPlayer(new CurrentTimeCommand( playbackStatus ));
 			}
 			
 			@Override
@@ -98,5 +133,19 @@ public class MainActivity extends Activity
 				cm.sendCommandToPlayer(new PrevCommand());
 			}
 		});
+    }
+    
+    @Override
+    public void onResume() 
+    {
+    	uiUpdater.start();
+    	super.onResume();
+    }
+    
+    @Override
+    public void onPause() 
+    {
+    	uiUpdater.stop();
+    	super.onPause();
     }
 }

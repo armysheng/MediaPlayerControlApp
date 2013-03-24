@@ -28,8 +28,36 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/textSongTime"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/songTime" />
+
+        <SeekBar
+            android:id="@+id/seekBarSongLength"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:progress="0" />
+
+        <TextView
+            android:id="@+id/textSongLength"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/songLength" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center" >
+        android:gravity="center">
 
         <TextView
             android:id="@+id/textVolume"
@@ -44,7 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:max="100"
-            android:progress="1" />
+            android:progress="0" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -116,7 +144,7 @@
 </LinearLayout>
 
 <ListView
-    android:id="@+id/listView1"
+    android:id="@+id/listPlaylist"
     android:layout_width="match_parent"
     android:layout_height="388dp" >
 </ListView>
