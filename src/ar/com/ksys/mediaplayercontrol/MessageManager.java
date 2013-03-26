@@ -6,23 +6,47 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.InetSocketAddress;
 
-import android.util.Log;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 public class MessageManager {
-	Socket socket;
-	InetSocketAddress address;
+	private Socket socket;
+	private InetSocketAddress address;
+	private ConnectivityManager connectionManager;
 	
-	MessageManager(String destination, int port)
+	MessageManager(String destination, int port, ConnectivityManager connManager)
 	{
 		socket = new Socket();
 		address = new InetSocketAddress(destination, port);
+		connectionManager = connManager;
+	}
+	
+	public boolean isNetworkAvailable() {
+		NetworkInfo netInfo = connectionManager.getActiveNetworkInfo();
+		return netInfo != null && netInfo.isConnected();
+	}
+	
+	public boolean isConnected() {
+		return socket.isConnected() && !socket.isClosed();
+	}
+	
+	public void connect() throws IOException {
+		socket.connect(address);
+	}
+	
+	public void renewConnection() {
+		socket = null;
+		socket = new Socket();
+	}
+	
+	public void closeConnection() {
+		try {
+			socket.close();
+		} catch (IOException e) { }
 	}
 	
 	private void send(String msg) throws IOException
 	{
-		if(!socket.isConnected())
-			socket.connect(address);
-
 		byte[] message = msg.getBytes();
 			
 		OutputStream writer = socket.getOutputStream();
@@ -40,26 +64,14 @@ public class MessageManager {
 		return new String(response, 0, msgLength);
 	}
 	
-	void sendCommandNoResponse(String msg)
+	void sendCommandNoResponse(String msg) throws IOException
 	{
-		try {
-			send(msg);
-		} catch(IOException e) {
-			Log.e("MessageManager", "Error sending data");
-			e.printStackTrace();
-		}
+		send(msg);
 	}
 	
-	String sendCommand(String msg)
+	String sendCommand(String msg) throws IOException
 	{
-		String response = new String();
-		try {
-			send(msg);
-			response = receive();
-		} catch (IOException e) {
-			Log.e("MessageManager", "Error sending or receiving data");
-			e.printStackTrace();
-		}
-		return response;
+		send(msg);
+		return receive();
 	}
 }

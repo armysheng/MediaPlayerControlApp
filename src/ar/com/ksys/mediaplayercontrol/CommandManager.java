@@ -5,15 +5,19 @@ import android.os.AsyncTask;
 public class CommandManager 
 {
 	private MessageManager mMessageManager;
+	private MainActivity mainActivity;
 	
-	CommandManager(String ipAddress, int port) 
+	CommandManager(MessageManager messageManager, MainActivity activity) 
 	{
-        mMessageManager = new MessageManager(ipAddress, port);
+        mMessageManager = messageManager;
+        mainActivity = activity;
 	}
-
+	
 	public void sendCommandToPlayer(Command command)
 	{
-		new CommandSender().execute(command);
+		if( mMessageManager.isNetworkAvailable() &&
+			mMessageManager.isConnected() )
+			new CommandSender().execute(command);
 	}
 	
 	public void sendCommandToPlayer(Command command, String args)
@@ -24,24 +28,36 @@ public class CommandManager
 	
     private class CommandSender extends AsyncTask<Command, Void, String> {
     	private Command command;
+    	private Exception error;
     	
     	protected String doInBackground(Command... cmds) 
     	{
     		command = cmds[0];
     		String stringCmd = command.stringCommand();
+    		String response = new String();
     		
-    		if( command.needsResponse() )
-    			return mMessageManager.sendCommand( stringCmd );
-    		else {
-    			mMessageManager.sendCommandNoResponse( stringCmd );
-    			return new String();
+    		try {
+	    		if( command.needsResponse() )
+	    			response = mMessageManager.sendCommand( stringCmd );
+	    		else {
+	    			mMessageManager.sendCommandNoResponse( stringCmd );
+	    		}
+    		} catch(Exception e) {
+    			error = e;
     		}
+    		return response;
     	}
     	
     	protected void onPostExecute(String r)
     	{
-    		command.setResponse(r);
-    		command.execute();
+    		if( error == null ) {
+	    		command.setResponse(r);
+	    		command.execute();
+    		} else {
+    			mMessageManager.closeConnection();
+    			mainActivity.showAlertDialog("Error", 
+    					"Connection error: " + error.getMessage());
+    		}
     	}
     }
 }

@@ -1,6 +1,11 @@
 package ar.com.ksys.mediaplayercontrol;
 
+import java.io.IOException;
+
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.net.ConnectivityManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
@@ -11,6 +16,7 @@ public class MainActivity extends Activity
 {
 	private static final int PORT = 9696;
 	
+	private MessageManager messageManager;
 	private CommandManager cm;
 	private UiUpdater uiUpdater;
 	private TimerHandler timer;
@@ -25,7 +31,11 @@ public class MainActivity extends Activity
         
         EditText editIpAddress = (EditText)findViewById(R.id.editIpAddress);
         
-        cm = new CommandManager(editIpAddress.getText().toString(), PORT);
+        ConnectivityManager connManager = (ConnectivityManager)
+        		getSystemService(CONNECTIVITY_SERVICE);
+        
+        messageManager = new MessageManager(editIpAddress.getText().toString(), PORT, connManager);
+        cm = new CommandManager(messageManager, this);
         playback = new PlaybackManager(cm);
         uiUpdater = new UiUpdater(this);
         timer = new TimerHandler();
@@ -133,6 +143,19 @@ public class MainActivity extends Activity
 				playback.prev();
 			}
 		});
+        
+        Button buttonConnect = (Button)findViewById(R.id.buttonConnect);
+        buttonConnect.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if( messageManager.isConnected() ) {
+					// Maybe we should ask the user to try to connect again?
+					showAlertDialog("Error", "There is already an active connection");
+				} else {
+					new HostConnectionTask().execute();
+				}
+			}
+		});
     }
     
     @Override
@@ -147,5 +170,37 @@ public class MainActivity extends Activity
     {
     	timer.stop();
     	super.onPause();
+    }
+    
+    public void showAlertDialog(String title, String message) {
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	builder.setTitle(title)
+    		.setMessage(message)
+    		.setPositiveButton("OK", null)
+    		.show();
+    }
+    
+    private class HostConnectionTask extends AsyncTask<Void, Void, Void> {
+    	private Exception error;
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			try {
+				messageManager.renewConnection();
+				messageManager.connect();
+			} catch (IOException e) {
+				error = e;
+			}
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void v) {
+			if( error == null ) {
+				showAlertDialog("Connected", "Connection to host successful.");
+			} else {
+				showAlertDialog("Error", "Could not connect to host. " + error.getMessage());
+			}
+		}
     }
 }

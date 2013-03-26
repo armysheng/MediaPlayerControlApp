@@ -146,7 +146,7 @@
 <ListView
     android:id="@+id/listPlaylist"
     android:layout_width="match_parent"
-    android:layout_height="388dp" >
+    android:layout_height="193dp" >
 </ListView>
 
 <LinearLayout
@@ -164,12 +164,12 @@
 
         <requestFocus />
     </EditText>
-    
-    <TextView
-	    android:id="@+id/textResponse"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:textIsSelectable="true" />
+
+    <Button
+        android:id="@+id/buttonConnect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/connect" />
 
 </LinearLayout>
 

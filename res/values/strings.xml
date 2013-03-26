@@ -22,4 +22,6 @@
     <string name="send">Send</string>
     
     <string name="update">Update</string>
+    
+    <string name="connect">Connect</string>
 </resources>
