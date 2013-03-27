@@ -143,33 +143,38 @@
 
 </LinearLayout>
 
-<ListView
-    android:id="@+id/listPlaylist"
-    android:layout_width="match_parent"
-    android:layout_height="193dp" >
-</ListView>
-
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
 
-    <EditText
-        android:id="@+id/editIpAddress"
-        android:layout_width="0dip"
-        android:layout_height="wrap_content"
-        android:layout_weight="1.30"
-        android:ems="10"
-        android:inputType="text"
-        android:text="@string/ip_address" >
+    <ListView
+        android:id="@+id/listPlaylist"
+        android:layout_width="match_parent"
+        android:layout_height="401dp" >
 
-        <requestFocus />
-    </EditText>
+    </ListView>
 
-    <Button
-        android:id="@+id/buttonConnect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/connect" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <EditText
+            android:id="@+id/editIpAddress"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.30"
+            android:ems="10"
+            android:inputType="text"
+            android:text="@string/ip_address" />
+
+        <Button
+            android:id="@+id/buttonConnect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.30"
+            android:text="@string/connect" />
+    </LinearLayout>
 
 </LinearLayout>
 

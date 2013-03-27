@@ -10,8 +10,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
 
-import ar.com.ksys.mediaplayercontrol.PlayerCommands.*;
-
 public class MainActivity extends Activity
 {
 	private static final int PORT = 9696;
@@ -21,7 +19,7 @@ public class MainActivity extends Activity
 	private UiUpdater uiUpdater;
 	private TimerHandler timer;
 	private PlaybackManager playback;
-	public ArrayAdapter<String> playlistAdapter;
+	private PlaylistAdapter playlistAdapter;
 	
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -39,26 +37,18 @@ public class MainActivity extends Activity
         playback = new PlaybackManager(cm);
         uiUpdater = new UiUpdater(this);
         timer = new TimerHandler();
-        
+
         playback.addObserver(uiUpdater);
         timer.addObserver(playback);
         
-        playlistAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-        ListView playlist = (ListView)findViewById(R.id.listPlaylist);
-        playlist.setAdapter(playlistAdapter);
+        ListView playlistView = (ListView)findViewById(R.id.listPlaylist);
+        playlistAdapter = new PlaylistAdapter(this, playback.getPlaylist());
+        playlistView.setAdapter(playlistAdapter);
         
         Button buttonUpdate = (Button)findViewById(R.id.buttonUpdate);
         buttonUpdate.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
         		playback.updateStatus();
-        		
-        		if(!playlistAdapter.isEmpty())
-        			return;
-        		
-        		//playlistAdapter.clear();
-        		for(int i = 0; i < 30; i++) {
-        			cm.sendCommandToPlayer(new SongInfoCommand(playlistAdapter), String.valueOf(i));
-        		}
         	}
         });
         

@@ -19,6 +19,7 @@ public class UiUpdater implements Observer
 		public TextView textSong;
 		public TextView textCurTime;
 		public TextView textSongLength;
+		public ListView playlistView;
 		
 		UiContainer(Activity activity) {
 			checkRepeat 	= (CheckBox)	activity.findViewById(R.id.checkRepeat);
@@ -29,11 +30,12 @@ public class UiUpdater implements Observer
 			textSong		= (TextView)	activity.findViewById(R.id.textCurrentSong);
 			textCurTime		= (TextView)	activity.findViewById(R.id.textSongTime);
 			textSongLength	= (TextView)	activity.findViewById(R.id.textSongLength);
+			playlistView 	= (ListView)	activity.findViewById(R.id.listPlaylist);
 		}
 	}
 	
 	// Helper method
-	private static String timeString(int timeInSeconds)
+	public static String timeString(int timeInSeconds)
 	{
 		int seconds = timeInSeconds % 60;
 		int minutes = (timeInSeconds -  seconds) / 60;
@@ -45,19 +47,24 @@ public class UiUpdater implements Observer
 		container = new UiContainer(activity);
 	}
 	
-	public void updateUi(PlaybackManager playback) {
+	public void updateUi(PlaybackManager playback ) {
 		int songPos = playback.getTime() / 1000;
-		Song song = playback.getCurrentSong();
+		Song curSong = playback.getCurrentSong();
 		
 		container.checkRepeat.setChecked( playback.isRepeat() );
 		container.checkShuffle.setChecked( playback.isShuffle() );
 		container.volumeBar.setProgress( playback.getVolume() );
 		container.songPosBar.setProgress( songPos );
 		container.textCurTime.setText( timeString(songPos) );		
-		container.textPos.setText( song.getTrackNumber() + 1 + "." );
-		container.textSong.setText( song.getTitle() );
-		container.textSongLength.setText( timeString(song.getLength()) );
-		container.songPosBar.setMax( song.getLength() );
+		container.textPos.setText( curSong.getTrackNumber() + 1 + "." );
+		container.textSong.setText( curSong.getTitle() );
+		container.textSongLength.setText( timeString(curSong.getLength()) );
+		container.songPosBar.setMax( curSong.getLength() );
+		
+		if( playback.isPlaylistChanged() ) {
+			BaseAdapter adapter = (BaseAdapter)container.playlistView.getAdapter();
+			adapter.notifyDataSetChanged();
+		}
 	}
 
 	@Override

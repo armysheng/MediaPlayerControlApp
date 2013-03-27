@@ -1,17 +1,9 @@
 package ar.com.ksys.mediaplayercontrol;
 
-import android.widget.*;
+import java.util.List;
 
 public class PlayerCommands 
 {
-	// Helper method
-	private static String timeString(int timeInSeconds)
-	{
-		int seconds = timeInSeconds % 60;
-		int minutes = (timeInSeconds -  seconds) / 60;
-		return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
-	}
-	
     public static class PlayCommand extends Command
     {
 		public String name() {
@@ -203,16 +195,16 @@ public class PlayerCommands
 	
 	public static class SongInfoCommand extends Command
 	{
-		private ArrayAdapter<String> playlist;
 		private Song song;
+		private List<Song> playlist;
 		
 		SongInfoCommand(Song s) {
 			song = s;
 		}
 		
-		SongInfoCommand(ArrayAdapter<String> adapter)
+		SongInfoCommand(List<Song> songList)
 		{
-			playlist = adapter;
+			playlist = songList;
 		}
 		
 		@Override
@@ -222,14 +214,16 @@ public class PlayerCommands
 			int separatorPos = response.indexOf(",");
 			
 			int songLength = Integer.parseInt( response.substring(0, separatorPos) );
-			String timeText = timeString(songLength);
+			//tring timeText = timeString(songLength);
 			
 			String songTitle = response.substring(separatorPos + 1);
 			
 			// If we have args we add the song to the list.
 			// If we don't have args, we update the seek bar and song length.
 			if( hasArgs() ) {
-				playlist.add( Integer.parseInt(getArgs()) + 1 + ". " + songTitle + "\t\t\t\t\t\t\t\t\t\t" + timeText);
+				//playlist.add( Integer.parseInt(getArgs()) + 1 + ". " + songTitle + "\t\t\t\t\t\t\t\t\t\t" + timeText);
+				int trackNumber = Integer.parseInt( getArgs() );
+				playlist.add( new Song(trackNumber, songLength, songTitle) );
 			} 
 			else {
 				song.setLength(songLength);
@@ -279,6 +273,30 @@ public class PlayerCommands
 	{
 		public String name() {
 			return "jumpToTime";
+		}
+	}
+	
+	public static class PlaylistLengthCommand extends Command
+	{
+		private PlaybackManager manager;
+		
+		public PlaylistLengthCommand(PlaybackManager pbManager) {
+			manager = pbManager;
+		}
+		
+		@Override
+		public void execute() {
+			int length = Integer.parseInt( getResponse() );
+			manager.setPlaylistLength(length);
+		}
+		
+		@Override
+		public boolean needsResponse() {
+			return true;
+		}
+		
+		public String name() {
+			return "playlistLength";
 		}
 	}
 }
