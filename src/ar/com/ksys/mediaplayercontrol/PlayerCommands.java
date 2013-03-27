@@ -214,14 +214,9 @@ public class PlayerCommands
 			int separatorPos = response.indexOf(",");
 			
 			int songLength = Integer.parseInt( response.substring(0, separatorPos) );
-			//tring timeText = timeString(songLength);
-			
 			String songTitle = response.substring(separatorPos + 1);
 			
-			// If we have args we add the song to the list.
-			// If we don't have args, we update the seek bar and song length.
 			if( hasArgs() ) {
-				//playlist.add( Integer.parseInt(getArgs()) + 1 + ". " + songTitle + "\t\t\t\t\t\t\t\t\t\t" + timeText);
 				int trackNumber = Integer.parseInt( getArgs() );
 				playlist.add( new Song(trackNumber, songLength, songTitle) );
 			} 
