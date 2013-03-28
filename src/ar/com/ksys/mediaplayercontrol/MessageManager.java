@@ -9,70 +9,77 @@ import java.net.InetSocketAddress;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-public class MessageManager {
-	private Socket socket;
-	private InetSocketAddress address;
-	private ConnectivityManager connectionManager;
-	
-	MessageManager(String destination, int port, ConnectivityManager connManager)
-	{
-		socket = new Socket();
-		address = new InetSocketAddress(destination, port);
-		connectionManager = connManager;
-	}
-	
-	public boolean isNetworkAvailable() {
-		NetworkInfo netInfo = connectionManager.getActiveNetworkInfo();
-		return netInfo != null && netInfo.isConnected();
-	}
-	
-	public boolean isConnected() {
-		return socket.isConnected() && !socket.isClosed();
-	}
-	
-	public void connect() throws IOException {
-		socket.connect(address);
-	}
-	
-	public void renewConnection() {
-		socket = null;
-		socket = new Socket();
-	}
-	
-	public void closeConnection() {
-		try {
-			socket.close();
-		} catch (IOException e) { }
-	}
-	
-	private synchronized void send(String msg) throws IOException
-	{
-		byte[] message = msg.getBytes();
-			
-		OutputStream writer = socket.getOutputStream();
-		writer.write(message);
-		writer.flush();
-	}
-	
-	private synchronized String receive() throws IOException
-	{
-		byte[] response = new byte[65536];
-		int msgLength = 0;
-		
-		InputStream socketReader = socket.getInputStream();
-		msgLength = socketReader.read(response);
+public class MessageManager 
+{
+    private Socket socket;
+    private InetSocketAddress address;
+    private ConnectivityManager connectionManager;
 
-		return new String(response, 0, msgLength);
-	}
-	
-	void sendCommandNoResponse(String msg) throws IOException
-	{
-		send(msg);
-	}
-	
-	String sendCommand(String msg) throws IOException
-	{
-		send(msg);
-		return receive();
-	}
+    public MessageManager(String destination, int port, 
+            ConnectivityManager connManager)
+    {
+        socket = new Socket();
+        address = new InetSocketAddress(destination, port);
+        connectionManager = connManager;
+    }
+
+    public boolean isNetworkAvailable() 
+    {
+        NetworkInfo netInfo = connectionManager.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnected();
+    }
+
+    public boolean isConnected() 
+    {
+        return socket.isConnected() && !socket.isClosed();
+    }
+
+    public void connect() throws IOException 
+    {
+        socket.connect(address);
+    }
+
+    public void renewConnection() 
+    {
+        socket = null;
+        socket = new Socket();
+    }
+
+    public void closeConnection() 
+    {
+        try {
+            socket.close();
+        } catch (IOException e) { }
+    }
+
+    private void send(String msg) throws IOException
+    {
+        byte[] message = msg.getBytes();
+
+        OutputStream writer = socket.getOutputStream();
+        writer.write(message);
+        writer.flush();
+    }
+
+    private String receive() throws IOException
+    {
+        byte[] response = new byte[65536];
+        int msgLength = 0;
+
+        InputStream socketReader = socket.getInputStream();
+        msgLength = socketReader.read(response);
+
+        return new String(response, 0, msgLength);
+    }
+
+    void sendCommandNoResponse(String msg) throws IOException
+    {
+        send(msg);
+    }
+
+    String sendCommand(String msg) throws IOException
+    {
+        send(msg);
+        return receive();
+    }
 }

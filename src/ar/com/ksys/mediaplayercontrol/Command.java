@@ -11,7 +11,7 @@ public abstract class Command
 	
 	public boolean needsResponse()
 	{ 
-		return false;
+		return true;
 	}
 	
 	public String stringCommand() 
