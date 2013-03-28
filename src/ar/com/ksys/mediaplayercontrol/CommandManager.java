@@ -20,9 +20,21 @@ public class CommandManager
 			new CommandSender().execute(command);
 	}
 	
-	public void sendCommandToPlayer(Command command, String args)
+	public void sendCommandToPlayer(Command command, String arg)
 	{
-		command.setArgs(args);
+		command.setArgs(arg);
+		sendCommandToPlayer(command);
+	}
+	
+	public void sendCommandToPlayer(Command command, int arg) 
+	{
+		command.setArgs( String.valueOf(arg) );
+		sendCommandToPlayer(command);
+	}
+	
+	public void sendCommandToPlayer(Command command, boolean arg)
+	{
+		command.setArgs(arg ? "true" : "false");
 		sendCommandToPlayer(command);
 	}
 	

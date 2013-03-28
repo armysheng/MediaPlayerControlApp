@@ -45,6 +45,14 @@ public class MainActivity extends Activity
         playlistAdapter = new PlaylistAdapter(this, playback.getPlaylist());
         playlistView.setAdapter(playlistAdapter);
         
+        playlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> listview, View view, int position,
+					long id) {
+				playback.setCurrentSong(position);
+			}
+		});
+        
         Button buttonUpdate = (Button)findViewById(R.id.buttonUpdate);
         buttonUpdate.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {

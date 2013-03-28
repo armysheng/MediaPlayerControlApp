@@ -45,17 +45,18 @@ public class MessageManager {
 		} catch (IOException e) { }
 	}
 	
-	private void send(String msg) throws IOException
+	private synchronized void send(String msg) throws IOException
 	{
 		byte[] message = msg.getBytes();
 			
 		OutputStream writer = socket.getOutputStream();
 		writer.write(message);
+		writer.flush();
 	}
 	
-	private String receive() throws IOException
+	private synchronized String receive() throws IOException
 	{
-		byte[] response = new byte[1000];
+		byte[] response = new byte[65536];
 		int msgLength = 0;
 		
 		InputStream socketReader = socket.getInputStream();

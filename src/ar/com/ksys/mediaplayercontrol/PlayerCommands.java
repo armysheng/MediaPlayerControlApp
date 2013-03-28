@@ -143,6 +143,13 @@ public class PlayerCommands
 		}
 	}
 	
+	public static class SetCurrentPositionCommand extends Command
+	{
+		public String name() {
+			return "setCurrentPos";
+		}
+	}
+	
 	public static class IsShuffleCommand extends Command
 	{
 		private PlaybackManager manager;

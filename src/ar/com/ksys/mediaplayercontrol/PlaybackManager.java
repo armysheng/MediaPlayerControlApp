@@ -72,6 +72,11 @@ public class PlaybackManager extends Observable implements Observer {
 		this.currentSong = currentSong;
 	}
 	
+	public void setCurrentSong(int position) {
+		cm.sendCommandToPlayer(new SetCurrentPositionCommand(), position);
+		play();
+	}
+	
 	public boolean isPlaying() {
 		return is_playing;
 	}
@@ -82,9 +87,8 @@ public class PlaybackManager extends Observable implements Observer {
 	
 	public void setShuffle(boolean is_shuffle, boolean update) {
 		this.is_shuffle = is_shuffle;
-		if( update )
-			cm.sendCommandToPlayer( new SetShuffleCommand(), 
-									is_shuffle ? "true" : "false");
+		if(update)
+			cm.sendCommandToPlayer(new SetShuffleCommand(), is_shuffle);
 	}
 	
 	public boolean isRepeat() {
@@ -93,9 +97,8 @@ public class PlaybackManager extends Observable implements Observer {
 	
 	public void setRepeat(boolean is_repeat, boolean update) {
 		this.is_repeat = is_repeat;
-		if( update )
-			cm.sendCommandToPlayer( new SetRepeatCommand(),
-									is_repeat ? "true" : "false");
+		if(update)
+			cm.sendCommandToPlayer(new SetRepeatCommand(), is_repeat);
 	}
 	
 	public int getVolume() {
@@ -104,9 +107,8 @@ public class PlaybackManager extends Observable implements Observer {
 	
 	public void setVolume(int volume, boolean update) {
 		this.volume = volume;
-		if( update )
-			cm.sendCommandToPlayer(new SetVolumeCommand(), 
-					String.valueOf(volume));
+		if(update)
+			cm.sendCommandToPlayer(new SetVolumeCommand(), volume);
 	}
 	
 	public int getTime() {
@@ -115,9 +117,8 @@ public class PlaybackManager extends Observable implements Observer {
 	
 	public void setTime(int time, boolean update) {
 		this.time = time;
-		if( update )
-			cm.sendCommandToPlayer(new JumpToTimeCommand(), 
-					String.valueOf(time));
+		if(update)
+			cm.sendCommandToPlayer(new JumpToTimeCommand(), time);
 	}
 	
 	public int getPlaylistLength() {
@@ -134,6 +135,8 @@ public class PlaybackManager extends Observable implements Observer {
 	
 	@Override
 	public void update(Observable observable, Object data) {
+		updateStatus();
+		
 		setChanged();
 		notifyObservers();
 		
@@ -154,8 +157,7 @@ public class PlaybackManager extends Observable implements Observer {
 			playlistUpdating = true;
 			playlist.clear();
     		for(int i = 0; i < playlistLength; i++) {
-    			cm.sendCommandToPlayer(new SongInfoCommand(playlist), 
-    								   String.valueOf(i));
+    			cm.sendCommandToPlayer(new SongInfoCommand(playlist), i);
     		}
 		}
 	}
