@@ -72,12 +72,7 @@ public class MessageManager
         return new String(response, 0, msgLength);
     }
 
-    void sendCommandNoResponse(String msg) throws IOException
-    {
-        send(msg);
-    }
-
-    String sendCommand(String msg) throws IOException
+    public String sendCommand(String msg) throws IOException
     {
         send(msg);
         return receive();

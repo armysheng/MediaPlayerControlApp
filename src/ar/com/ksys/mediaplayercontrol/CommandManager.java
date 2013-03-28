@@ -50,11 +50,7 @@ public class CommandManager
             String response = new String();
 
             try {
-                if( command.needsResponse() )
-                    response = mMessageManager.sendCommand( stringCmd );
-                else {
-                    mMessageManager.sendCommandNoResponse( stringCmd );
-                }
+                response = mMessageManager.sendCommand(stringCmd);
             } catch(Exception e) {
                 error = e;
             }

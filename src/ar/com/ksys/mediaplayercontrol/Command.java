@@ -9,11 +9,6 @@ public abstract class Command
 
 	public void execute() { };
 	
-	public boolean needsResponse()
-	{ 
-		return true;
-	}
-	
 	public String stringCommand() 
 	{
 		return name() + (hasArgs() ? " " + getArgs() : "");

@@ -91,12 +91,6 @@ public class PlayerCommands
             manager.setVolume( Integer.parseInt(getResponse()), false );
         }
 
-        @Override
-        public boolean needsResponse()
-        {
-            return true;
-        }
-
         public String name() 
         {
             return "volume";
@@ -118,12 +112,6 @@ public class PlayerCommands
             song.setTitle( getResponse() );
         }
 
-        @Override
-        public boolean needsResponse()
-        {
-            return true;
-        }
-
         public String name() 
         {
             return "songTitle";
@@ -143,12 +131,6 @@ public class PlayerCommands
         public void execute()
         {
             song.setTrackNumber( Integer.parseInt(getResponse()) );
-        }
-
-        @Override
-        public boolean needsResponse()
-        {
-            return true;
         }
 
         public String name() 
@@ -180,12 +162,6 @@ public class PlayerCommands
             manager.setShuffle( getResponse().equalsIgnoreCase("true"), false );
         }
 
-        @Override
-        public boolean needsResponse()
-        {
-            return true;
-        }
-
         public String name() 
         {
             return "isShuffle";
@@ -205,12 +181,6 @@ public class PlayerCommands
         public void execute()
         {
             manager.setRepeat( getResponse().equalsIgnoreCase("true"), false );
-        }
-
-        @Override
-        public boolean needsResponse()
-        {
-            return true;
         }
 
         public String name() 
@@ -253,12 +223,6 @@ public class PlayerCommands
             }
         }
 
-        @Override
-        public boolean needsResponse()
-        {
-            return true;
-        }
-
         public String name() 
         {
             return "songInfoTuple";
@@ -278,12 +242,6 @@ public class PlayerCommands
         public void execute()
         {
             manager.setTime( Integer.parseInt(getResponse()), false );
-        }
-
-        @Override
-        public boolean needsResponse()
-        {
-            return true;
         }
 
         public String name() 
@@ -314,12 +272,6 @@ public class PlayerCommands
         {
             int length = Integer.parseInt( getResponse() );
             manager.setPlaylistLength(length);
-        }
-
-        @Override
-        public boolean needsResponse() 
-        {
-            return true;
         }
 
         public String name() 
