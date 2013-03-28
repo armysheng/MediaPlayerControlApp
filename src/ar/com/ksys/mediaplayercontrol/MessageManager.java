@@ -33,6 +33,11 @@ public class MessageManager
     {
         return socket.isConnected() && !socket.isClosed();
     }
+    
+    public boolean isClosed()
+    {
+        return socket.isClosed();
+    }
 
     public void connect() throws IOException 
     {

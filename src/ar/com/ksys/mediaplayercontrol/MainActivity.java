@@ -181,6 +181,11 @@ public class MainActivity extends Activity
             .setPositiveButton("OK", null)
             .show();
     }
+    
+    public TimerHandler getTimer()
+    {
+        return timer;
+    }
 
     private class HostConnectionTask extends AsyncTask<Void, Void, Void> 
     {
@@ -205,7 +210,8 @@ public class MainActivity extends Activity
                 showAlertDialog("Connected", "Connection to host successful.");
                 timer.start();
             } else {
-                showAlertDialog("Error", "Could not connect to host. " + error.getMessage());
+                showAlertDialog("Error", 
+                        "Could not connect to host. " + error.getMessage());
             }
         }
     }

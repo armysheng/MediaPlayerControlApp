@@ -4,19 +4,19 @@ import android.os.AsyncTask;
 
 public class CommandManager 
 {
-    private MessageManager mMessageManager;
+    private MessageManager messageManager;
     private MainActivity mainActivity;
 
     public CommandManager(MessageManager messageManager, MainActivity activity)
     {
-        mMessageManager = messageManager;
+        this.messageManager = messageManager;
         mainActivity = activity;
     }
 
     public void sendCommandToPlayer(Command command)
     {
-        if( mMessageManager.isNetworkAvailable() &&
-            mMessageManager.isConnected() )
+        if( messageManager.isNetworkAvailable() &&
+            messageManager.isConnected() )
             new CommandSender().execute(command);
     }
 
@@ -50,7 +50,7 @@ public class CommandManager
             String response = new String();
 
             try {
-                response = mMessageManager.sendCommand(stringCmd);
+                response = messageManager.sendCommand(stringCmd);
             } catch(Exception e) {
                 error = e;
             }
@@ -63,7 +63,10 @@ public class CommandManager
                 command.setResponse(r);
                 command.execute();
             } else {
-                mMessageManager.closeConnection();
+                if( messageManager.isClosed() )
+                    return;
+                messageManager.closeConnection();
+                mainActivity.getTimer().stop();
                 mainActivity.showAlertDialog("Error", 
                         "Connection error: " + error.getMessage());
             }
