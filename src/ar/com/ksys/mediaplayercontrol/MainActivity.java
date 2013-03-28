@@ -147,7 +147,7 @@ public class MainActivity extends Activity
 			@Override
 			public void onClick(View v) {
 				if( messageManager.isConnected() ) {
-					// Maybe we should ask the user to try to connect again?
+					// TODO Maybe we should ask the user to try to connect again?
 					showAlertDialog("Error", "There is already an active connection");
 				} else {
 					new HostConnectionTask().execute();
@@ -159,7 +159,10 @@ public class MainActivity extends Activity
     @Override
     public void onResume() 
     {
-    	timer.start();
+    	if( messageManager.isNetworkAvailable() &&
+    		messageManager.isConnected() && !timer.isActive() ) {
+    		timer.start();
+    	}
     	super.onResume();
     }
     
@@ -196,6 +199,7 @@ public class MainActivity extends Activity
 		protected void onPostExecute(Void v) {
 			if( error == null ) {
 				showAlertDialog("Connected", "Connection to host successful.");
+				timer.start();
 			} else {
 				showAlertDialog("Error", "Could not connect to host. " + error.getMessage());
 			}
