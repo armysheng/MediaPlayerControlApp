@@ -21,8 +21,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:text="@string/currentSong"
-            android:textSize="@dimen/BigText" />
+            android:textSize="@dimen/BigText"
+            android:textIsSelectable="false" />
 
     </LinearLayout>
 
@@ -100,6 +100,13 @@
     android:layout_height="wrap_content" >
 
     <Button
+        android:id="@+id/buttonPrev"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/prev" />
+
+    <Button
         android:id="@+id/buttonPlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -125,20 +132,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/next" 
-        style="?android:attr/borderlessButtonStyle" />
-
-    <Button
-        android:id="@+id/buttonPrev"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/prev"
-        style="?android:attr/borderlessButtonStyle" />
-
-    <Button
-        android:id="@+id/buttonUpdate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/update"
         style="?android:attr/borderlessButtonStyle" />
 
 </LinearLayout>

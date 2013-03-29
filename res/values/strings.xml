@@ -15,8 +15,6 @@
     <string name="songLength">00:00</string>
     <string name="volume">Volume</string>
     
-    <string name="currentSong">current song</string>
-    
     <string name="ip_address">192.168.0.145</string>
     
     <string name="send">Send</string>

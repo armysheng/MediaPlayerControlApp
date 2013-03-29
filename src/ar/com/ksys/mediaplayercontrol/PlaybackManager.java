@@ -73,6 +73,8 @@ public class PlaybackManager extends Observable implements Observer
     {
         cm.sendCommandToPlayer(new SetCurrentPositionCommand(), position);
         play();
+        
+        // Force an update in the UI
         currentSong = playlist.get(position);
         time = 0;
         updateObservers();
@@ -146,17 +148,6 @@ public class PlaybackManager extends Observable implements Observer
         return playlistChanged;
     }
 
-    public void updateStatus() 
-    {
-        cm.sendCommandToPlayer( new CurrentTimeCommand(this) );
-        cm.sendCommandToPlayer( new CurrentPositionCommand(this) );
-        cm.sendCommandToPlayer( new SongInfoCommand(this) );
-        cm.sendCommandToPlayer( new IsRepeatCommand(this) );
-        cm.sendCommandToPlayer( new IsShuffleCommand(this) );
-        cm.sendCommandToPlayer( new PlaylistLengthCommand(this) );
-        cm.sendCommandToPlayer( new VolumeCommand(this) );
-    }
-
     @Override
     public void update(Observable observable, Object data) 
     {
@@ -183,6 +174,17 @@ public class PlaybackManager extends Observable implements Observer
                 cm.sendCommandToPlayer(new SongInfoCommand(playlist), i);
             }
         }
+    }
+    
+    private void updateStatus() 
+    {
+        cm.sendCommandToPlayer( new CurrentTimeCommand(this) );
+        cm.sendCommandToPlayer( new CurrentPositionCommand(this) );
+        cm.sendCommandToPlayer( new SongInfoCommand(this) );
+        cm.sendCommandToPlayer( new IsRepeatCommand(this) );
+        cm.sendCommandToPlayer( new IsShuffleCommand(this) );
+        cm.sendCommandToPlayer( new PlaylistLengthCommand(this) );
+        cm.sendCommandToPlayer( new VolumeCommand(this) );
     }
     
     private void updateObservers()

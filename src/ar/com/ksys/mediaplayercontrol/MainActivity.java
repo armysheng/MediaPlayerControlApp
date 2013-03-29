@@ -53,13 +53,6 @@ public class MainActivity extends Activity
             }
         });
 
-        Button buttonUpdate = (Button)findViewById(R.id.buttonUpdate);
-        buttonUpdate.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                playback.updateStatus();
-            }
-        });
-
         CheckBox checkShuffle = (CheckBox)findViewById(R.id.checkShuffle);
         checkShuffle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
