@@ -29,11 +29,14 @@ public class TimerHandler extends Observable
         public void handleMessage(Message msg) 
         {
             TimerHandler timer = timerRef.get();
+            
+            if( !timer.isActive() )
+                return;
+            
             timer.setChanged();
             timer.notifyObservers();
-            if(timer.isActive()) {
-                sendEmptyMessageDelayed(0, timer.getInterval());
-            }
+            
+            sendEmptyMessageDelayed(0, timer.getInterval());
         }	
     };
 
