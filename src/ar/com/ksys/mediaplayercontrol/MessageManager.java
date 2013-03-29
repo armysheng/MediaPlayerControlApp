@@ -69,10 +69,9 @@ public class MessageManager
     private String receive() throws IOException
     {
         byte[] response = new byte[65536];
-        int msgLength = 0;
 
         InputStream socketReader = socket.getInputStream();
-        msgLength = socketReader.read(response);
+        int msgLength = socketReader.read(response);
 
         return new String(response, 0, msgLength);
     }

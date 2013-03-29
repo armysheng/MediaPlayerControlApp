@@ -24,15 +24,15 @@ public class UiUpdater implements Observer
 
         public UiContainer(Activity activity) 
         {
-            checkRepeat 	= (CheckBox)	activity.findViewById(R.id.checkRepeat);
-            checkShuffle 	= (CheckBox)	activity.findViewById(R.id.checkShuffle);
-            volumeBar 		= (SeekBar)		activity.findViewById(R.id.volumeBar);
-            songPosBar 		= (SeekBar)		activity.findViewById(R.id.seekBarSongLength);
-            textPos 		= (TextView)	activity.findViewById(R.id.textCurrentPos);
-            textSong		= (TextView)	activity.findViewById(R.id.textCurrentSong);
-            textCurTime		= (TextView)	activity.findViewById(R.id.textSongTime);
-            textSongLength	= (TextView)	activity.findViewById(R.id.textSongLength);
-            playlistView 	= (ListView)	activity.findViewById(R.id.listPlaylist);
+            checkRepeat    = (CheckBox) activity.findViewById(R.id.checkRepeat);
+            checkShuffle   = (CheckBox) activity.findViewById(R.id.checkShuffle);
+            volumeBar      = (SeekBar)  activity.findViewById(R.id.volumeBar);
+            songPosBar     = (SeekBar)  activity.findViewById(R.id.seekBarSongLength);
+            textPos        = (TextView) activity.findViewById(R.id.textCurrentPos);
+            textSong       = (TextView) activity.findViewById(R.id.textCurrentSong);
+            textCurTime    = (TextView) activity.findViewById(R.id.textSongTime);
+            textSongLength = (TextView) activity.findViewById(R.id.textSongLength);
+            playlistView   = (ListView) activity.findViewById(R.id.listPlaylist);
         }
     }
 

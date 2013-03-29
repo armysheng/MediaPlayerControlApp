@@ -58,11 +58,6 @@ public class PlaybackManager extends Observable implements Observer
         cm.sendCommandToPlayer( new PrevCommand() );
     }
 
-    public boolean isPlaylistUpdating() 
-    {
-        return playlistUpdating;
-    }
-
     public Song getCurrentSong() 
     {
         return currentSong;
