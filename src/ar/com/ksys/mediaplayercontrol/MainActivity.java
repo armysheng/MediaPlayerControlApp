@@ -47,22 +47,25 @@ public class MainActivity extends Activity
 
         playlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> listview, View view, int position,
-                    long id) {
+            public void onItemClick(AdapterView<?> listview, View view, 
+                    int position, long id) 
+            {
                 playback.setCurrentSong(position);
             }
         });
 
         CheckBox checkShuffle = (CheckBox)findViewById(R.id.checkShuffle);
         checkShuffle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
+            {
                 playback.setShuffle(isChecked, true);
             }
         });
 
         CheckBox checkRepeat = (CheckBox)findViewById(R.id.checkRepeat);
         checkRepeat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
+            {
                 playback.setRepeat(isChecked, true);
             }
         });
@@ -70,12 +73,17 @@ public class MainActivity extends Activity
         SeekBar volumeBar = (SeekBar)findViewById(R.id.volumeBar);
         volumeBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
+            public void onStopTrackingTouch(SeekBar seekBar) 
+            {
                 playback.setVolume(seekBar.getProgress(), true);
+                uiUpdater.setVolumeBarIsUpdating(false);
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) { }
+            public void onStartTrackingTouch(SeekBar seekBar) 
+            { 
+                uiUpdater.setVolumeBarIsUpdating(true);
+            }
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) { }
@@ -84,14 +92,16 @@ public class MainActivity extends Activity
         SeekBar songPosBar = (SeekBar)findViewById(R.id.seekBarSongLength);
         songPosBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
+            public void onStopTrackingTouch(SeekBar seekBar) 
+            {
                 playback.setTime(seekBar.getProgress() * 1000, true);
-                timer.start();
+                uiUpdater.setSeekBarIsUpdating(false);
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) { 
-                timer.stop();
+            public void onStartTrackingTouch(SeekBar seekBar) 
+            { 
+                uiUpdater.setSeekBarIsUpdating(true);
             }
 
             @Override
@@ -101,7 +111,8 @@ public class MainActivity extends Activity
         Button buttonPlay = (Button)findViewById(R.id.buttonPlay);
         buttonPlay.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) 
+            {
                 playback.play();
             }
         });
@@ -109,7 +120,8 @@ public class MainActivity extends Activity
         Button buttonPause = (Button)findViewById(R.id.buttonPause);
         buttonPause.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) 
+            {
                 playback.playPause();
             }
         });
@@ -117,7 +129,8 @@ public class MainActivity extends Activity
         Button buttonStop = (Button)findViewById(R.id.buttonStop);
         buttonStop.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) 
+            {
                 playback.stop();
             }
         });
@@ -125,7 +138,8 @@ public class MainActivity extends Activity
         Button buttonNext = (Button)findViewById(R.id.buttonNext);
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) 
+            {
                 playback.next();
             }
         });
@@ -133,7 +147,8 @@ public class MainActivity extends Activity
         Button buttonPrev = (Button)findViewById(R.id.buttonPrev);
         buttonPrev.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) 
+            {
                 playback.prev();
             }
         });
@@ -141,7 +156,8 @@ public class MainActivity extends Activity
         Button buttonConnect = (Button)findViewById(R.id.buttonConnect);
         buttonConnect.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) 
+            {
                 if( messageManager.isConnected() ) {
                     // TODO Maybe we should ask the user to try to connect again?
                     showAlertDialog("Error", "There is already an active connection");

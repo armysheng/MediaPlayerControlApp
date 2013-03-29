@@ -9,6 +9,8 @@ import android.widget.*;
 public class UiUpdater implements Observer
 {
     private UiContainer container;
+    private boolean volumeUpdating;
+    private boolean seekUpdating;
 
     private class UiContainer 
     {
@@ -56,18 +58,32 @@ public class UiUpdater implements Observer
 
         container.checkRepeat.setChecked( playback.isRepeat() );
         container.checkShuffle.setChecked( playback.isShuffle() );
-        container.volumeBar.setProgress( playback.getVolume() );
-        container.songPosBar.setProgress( songPos );
-        container.textCurTime.setText( timeString(songPos) );		
+        container.textCurTime.setText( timeString(songPos) );       
         container.textPos.setText( curSong.getTrackNumber() + 1 + "." );
         container.textSong.setText( curSong.getTitle() );
         container.textSongLength.setText( timeString(curSong.getLength()) );
         container.songPosBar.setMax( curSong.getLength() );
+
+        if(!volumeUpdating)
+            container.volumeBar.setProgress( playback.getVolume() );
         
+        if(!seekUpdating)
+            container.songPosBar.setProgress( songPos );
+
         if( playback.isPlaylistChanged() ) {
             BaseAdapter adapter = (BaseAdapter)container.playlistView.getAdapter();
             adapter.notifyDataSetChanged();
         }
+    }
+    
+    public void setVolumeBarIsUpdating(boolean updating)
+    {
+        volumeUpdating = updating;
+    }
+    
+    public void setSeekBarIsUpdating(boolean updating)
+    {
+        seekUpdating = updating;
     }
 
     @Override
