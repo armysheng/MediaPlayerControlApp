@@ -63,7 +63,7 @@ public class UiUpdater implements Observer
         container.textSong.setText( curSong.getTitle() );
         container.textSongLength.setText( timeString(curSong.getLength()) );
         container.songPosBar.setMax( curSong.getLength() );
-
+        
         if( playback.isPlaylistChanged() ) {
             BaseAdapter adapter = (BaseAdapter)container.playlistView.getAdapter();
             adapter.notifyDataSetChanged();

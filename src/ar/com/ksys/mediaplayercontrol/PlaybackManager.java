@@ -12,7 +12,6 @@ public class PlaybackManager extends Observable implements Observer
     private CommandManager cm;
     private Song currentSong;
     private List<Song> playlist;
-    private boolean is_playing;
     private boolean is_shuffle;
     private boolean is_repeat;
     private int volume;
@@ -51,11 +50,13 @@ public class PlaybackManager extends Observable implements Observer
     public void next() 
     {
         cm.sendCommandToPlayer( new NextCommand() );
+        updateStatus();
     }
 
     public void prev() 
     {
         cm.sendCommandToPlayer( new PrevCommand() );
+        updateStatus();
     }
 
     public Song getCurrentSong() 
@@ -63,20 +64,18 @@ public class PlaybackManager extends Observable implements Observer
         return currentSong;
     }
 
-    public void setCurrentSong(Song currentSong) 
+    public void notifySongChanged()
     {
-        this.currentSong = currentSong;
+        updateObservers();
     }
-
+    
     public void setCurrentSong(int position) 
     {
         cm.sendCommandToPlayer(new SetCurrentPositionCommand(), position);
         play();
-    }
-
-    public boolean isPlaying() 
-    {
-        return is_playing;
+        currentSong = playlist.get(position);
+        time = 0;
+        updateObservers();
     }
 
     public boolean isShuffle() 
@@ -149,22 +148,20 @@ public class PlaybackManager extends Observable implements Observer
 
     public void updateStatus() 
     {
-        cm.sendCommandToPlayer( new VolumeCommand(this) );
-        cm.sendCommandToPlayer( new CurrentPositionCommand(currentSong) );
-        cm.sendCommandToPlayer( new SongInfoCommand(currentSong) );
         cm.sendCommandToPlayer( new CurrentTimeCommand(this) );
+        cm.sendCommandToPlayer( new CurrentPositionCommand(this) );
+        cm.sendCommandToPlayer( new SongInfoCommand(this) );
         cm.sendCommandToPlayer( new IsRepeatCommand(this) );
         cm.sendCommandToPlayer( new IsShuffleCommand(this) );
         cm.sendCommandToPlayer( new PlaylistLengthCommand(this) );
+        cm.sendCommandToPlayer( new VolumeCommand(this) );
     }
 
     @Override
     public void update(Observable observable, Object data) 
     {
         updateStatus();
-
-        setChanged();
-        notifyObservers();
+        updateObservers();
 
         // playListChanged: this flag will be set during only one 
         // call to notify(). After that, we clear it.
@@ -186,5 +183,11 @@ public class PlaybackManager extends Observable implements Observer
                 cm.sendCommandToPlayer(new SongInfoCommand(playlist), i);
             }
         }
+    }
+    
+    private void updateObservers()
+    {
+        setChanged();
+        notifyObservers();
     }
 }

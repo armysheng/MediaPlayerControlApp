@@ -120,17 +120,19 @@ public class PlayerCommands
 
     public static class CurrentPositionCommand extends Command
     {
-        private Song song;
+        private PlaybackManager manager;
 
-        public CurrentPositionCommand(Song s) 
+        public CurrentPositionCommand(PlaybackManager pbManager) 
         {
-            song = s;
+            manager = pbManager;
         }
 
         @Override
         public void execute()
         {
+            Song song = manager.getCurrentSong();
             song.setTrackNumber( Integer.parseInt(getResponse()) );
+            manager.notifySongChanged();
         }
 
         public String name() 
@@ -191,12 +193,12 @@ public class PlayerCommands
 
     public static class SongInfoCommand extends Command
     {
-        private Song song;
+        private PlaybackManager manager;
         private List<Song> playlist;
 
-        public SongInfoCommand(Song s) 
+        public SongInfoCommand(PlaybackManager pbManager)
         {
-            song = s;
+            manager = pbManager;
         }
 
         public SongInfoCommand(List<Song> songList)
@@ -218,8 +220,10 @@ public class PlayerCommands
                 playlist.add( new Song(trackNumber, songLength, songTitle) );
             } 
             else {
+                Song song = manager.getCurrentSong();
                 song.setLength(songLength);
                 song.setTitle(songTitle);
+                manager.notifySongChanged();
             }
         }
 
