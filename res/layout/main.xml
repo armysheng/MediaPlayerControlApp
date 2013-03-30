@@ -119,10 +119,6 @@
             android:layout_height="wrap_content"
             android:text="@string/play" />
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-
         <Button
             android:id="@+id/buttonPause"
             style="?android:attr/borderlessButtonStyle"
@@ -144,10 +140,6 @@
             android:layout_height="wrap_content"
             android:text="@string/next" />
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -166,10 +158,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/shuffle" />
         </LinearLayout>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
     </LinearLayout>
 
     <LinearLayout
