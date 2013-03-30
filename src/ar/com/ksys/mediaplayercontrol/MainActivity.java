@@ -86,7 +86,12 @@ public class MainActivity extends Activity
             }
 
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) { }
+            public void onProgressChanged(SeekBar seekBar, int progress, 
+                    boolean fromUser)
+            {
+                if(fromUser)
+                    uiUpdater.setVolumeText(progress);
+            }
         });
 
         SeekBar songPosBar = (SeekBar)findViewById(R.id.seekBarSongLength);
@@ -105,7 +110,12 @@ public class MainActivity extends Activity
             }
 
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) { }
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                    boolean fromUser)
+            {
+                if(fromUser)
+                    uiUpdater.setTimeText(progress);
+            }
         });
 
         Button buttonPlay = (Button)findViewById(R.id.buttonPlay);

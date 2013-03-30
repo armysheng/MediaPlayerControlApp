@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
+    android:layout_height="wrap_content"
+    android:baselineAligned="false"
+    android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,63 +21,138 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:textSize="@dimen/BigText"
-            android:textIsSelectable="false" />
-
+            android:textIsSelectable="false"
+            android:textSize="@dimen/BigText" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:gravity="center">
+        android:layout_height="wrap_content"
+        android:baselineAligned="false" >
 
-        <TextView
-            android:id="@+id/textSongTime"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/songTime" />
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
 
-        <SeekBar
-            android:id="@+id/seekBarSongLength"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
+            <TextView
+                android:id="@+id/textSongTime"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/songTime" />
+
+            <TextView
+                android:id="@+id/textVolume"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/volume" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:progress="0" />
+            android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/textSongLength"
+            <SeekBar
+                android:id="@+id/seekBarSongLength"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:progress="0" />
+
+            <SeekBar
+                android:id="@+id/volumeBar"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:max="100"
+                android:progress="0" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/songLength" />
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textSongLength"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/songLength" />
+
+            <TextView
+                android:id="@+id/textVolumeValue"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical|center"
+                android:text="@string/volumeValue"
+                android:textIsSelectable="false" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center">
+        android:orientation="horizontal" >
 
-        <TextView
-            android:id="@+id/textVolume"
+        <Button
+            android:id="@+id/buttonPrev"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/volume" />
-
-        <SeekBar
-            android:id="@+id/volumeBar"
-            android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:max="100"
-            android:progress="0" />
+            android:text="@string/prev" />
+
+        <Button
+            android:id="@+id/buttonPlay"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/play" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:id="@+id/buttonPause"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pause" />
+
+        <Button
+            android:id="@+id/buttonStop"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stop" />
+
+        <Button
+            android:id="@+id/buttonNext"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/next" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="right|center_vertical"
+            android:orientation="horizontal" >
 
             <CheckBox
                 android:id="@+id/checkRepeat"
@@ -90,86 +165,46 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/shuffle" />
-
         </LinearLayout>
 
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
     </LinearLayout>
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
-
-    <Button
-        android:id="@+id/buttonPrev"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/prev" />
-
-    <Button
-        android:id="@+id/buttonPlay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/play"
-        style="?android:attr/borderlessButtonStyle" />
-
-    <Button
-        android:id="@+id/buttonPause"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/pause"
-        style="?android:attr/borderlessButtonStyle" />
-
-    <Button
-        android:id="@+id/buttonStop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/stop"
-        style="?android:attr/borderlessButtonStyle" />
-
-    <Button
-        android:id="@+id/buttonNext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/next" 
-        style="?android:attr/borderlessButtonStyle" />
-
-</LinearLayout>
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
-
-    <ListView
-        android:id="@+id/listPlaylist"
-        android:layout_width="match_parent"
-        android:layout_height="320dp" >
-
-    </ListView>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
-        <EditText
-            android:id="@+id/editIpAddress"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.30"
-            android:ems="10"
-            android:inputType="text"
-            android:text="@string/ip_address" />
+        <ListView
+            android:id="@+id/listPlaylist"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" >
 
-        <Button
-            android:id="@+id/buttonConnect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.30"
-            android:text="@string/connect" />
+        </ListView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/editIpAddress"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:ems="10"
+                android:inputType="text"
+                android:text="@string/ip_address" />
+
+            <Button
+                android:id="@+id/buttonConnect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/connect" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
-
-</LinearLayout>
-

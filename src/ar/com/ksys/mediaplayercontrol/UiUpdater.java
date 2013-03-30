@@ -21,6 +21,7 @@ public class UiUpdater implements Observer
         public TextView textPos;
         public TextView textSong;
         public TextView textCurTime;
+        public TextView textCurVolume;
         public TextView textSongLength;
         public ListView playlistView;
 
@@ -33,6 +34,7 @@ public class UiUpdater implements Observer
             textPos        = (TextView) activity.findViewById(R.id.textCurrentPos);
             textSong       = (TextView) activity.findViewById(R.id.textCurrentSong);
             textCurTime    = (TextView) activity.findViewById(R.id.textSongTime);
+            textCurVolume  = (TextView) activity.findViewById(R.id.textVolumeValue);
             textSongLength = (TextView) activity.findViewById(R.id.textSongLength);
             playlistView   = (ListView) activity.findViewById(R.id.listPlaylist);
         }
@@ -53,22 +55,26 @@ public class UiUpdater implements Observer
 
     public void updateUi(PlaybackManager playback ) 
     {
-        int songPos = playback.getTime() / 1000;
+        int songTime = playback.getTime() / 1000;
         Song curSong = playback.getCurrentSong();
 
         container.checkRepeat.setChecked( playback.isRepeat() );
         container.checkShuffle.setChecked( playback.isShuffle() );
-        container.textCurTime.setText( timeString(songPos) );       
         container.textPos.setText( curSong.getTrackNumber() + 1 + "." );
         container.textSong.setText( curSong.getTitle() );
         container.textSongLength.setText( timeString(curSong.getLength()) );
         container.songPosBar.setMax( curSong.getLength() );
 
-        if(!volumeUpdating)
-            container.volumeBar.setProgress( playback.getVolume() );
+        if(!volumeUpdating) {
+            int volume = playback.getVolume();
+            container.volumeBar.setProgress(volume);
+            setVolumeText(volume);
+        }
         
-        if(!seekUpdating)
-            container.songPosBar.setProgress( songPos );
+        if(!seekUpdating) {
+            container.songPosBar.setProgress(songTime);
+            setTimeText(songTime);
+        }
 
         if( playback.isPlaylistChanged() ) {
             BaseAdapter adapter = (BaseAdapter)container.playlistView.getAdapter();
@@ -84,6 +90,16 @@ public class UiUpdater implements Observer
     public void setSeekBarIsUpdating(boolean updating)
     {
         seekUpdating = updating;
+    }
+    
+    public void setVolumeText(int volume)
+    {
+        container.textCurVolume.setText( String.valueOf(volume) );
+    }
+    
+    public void setTimeText(int time)
+    {
+        container.textCurTime.setText( timeString(time) );
     }
 
     @Override

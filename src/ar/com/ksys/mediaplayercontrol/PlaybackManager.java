@@ -50,13 +50,13 @@ public class PlaybackManager extends Observable implements Observer
     public void next() 
     {
         cm.sendCommandToPlayer( new NextCommand() );
-        updateStatus();
+        updateStatusSmall();
     }
 
     public void prev() 
     {
         cm.sendCommandToPlayer( new PrevCommand() );
-        updateStatus();
+        updateStatusSmall();
     }
 
     public Song getCurrentSong() 
@@ -185,6 +185,13 @@ public class PlaybackManager extends Observable implements Observer
         cm.sendCommandToPlayer( new IsShuffleCommand(this) );
         cm.sendCommandToPlayer( new PlaylistLengthCommand(this) );
         cm.sendCommandToPlayer( new VolumeCommand(this) );
+    }
+    
+    private void updateStatusSmall()
+    {
+        cm.sendCommandToPlayer( new CurrentTimeCommand(this) );
+        cm.sendCommandToPlayer( new CurrentPositionCommand(this) );
+        cm.sendCommandToPlayer( new SongInfoCommand(this) );
     }
     
     private void updateObservers()
