@@ -15,12 +15,15 @@ public class MessageManager
     private InetSocketAddress address;
     private ConnectivityManager connectionManager;
 
-    public MessageManager(String destination, int port, 
-            ConnectivityManager connManager)
+    public MessageManager(ConnectivityManager connManager)
     {
         socket = new Socket();
-        address = new InetSocketAddress(destination, port);
         connectionManager = connManager;
+    }
+    
+    public void setAddress(String dest, int port)
+    {
+        address = new InetSocketAddress(dest, port);
     }
 
     public boolean isNetworkAvailable() 

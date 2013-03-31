@@ -20,6 +20,7 @@ public class MainActivity extends Activity
     private TimerHandler timer;
     private PlaybackManager playback;
     private PlaylistAdapter playlistAdapter;
+    private EditText editIpAddress;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -27,12 +28,12 @@ public class MainActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        EditText editIpAddress = (EditText)findViewById(R.id.editIpAddress);
+        editIpAddress = (EditText)findViewById(R.id.editIpAddress);
 
         ConnectivityManager connManager = (ConnectivityManager)
                 getSystemService(CONNECTIVITY_SERVICE);
 
-        messageManager = new MessageManager(editIpAddress.getText().toString(), PORT, connManager);
+        messageManager = new MessageManager(connManager);
         cm = new CommandManager(messageManager, this);
         playback = new PlaybackManager(cm);
         uiUpdater = new UiUpdater(this);
@@ -172,6 +173,7 @@ public class MainActivity extends Activity
                     // TODO Maybe we should ask the user to try to connect again?
                     showAlertDialog("Error", "There is already an active connection");
                 } else {
+                    messageManager.setAddress(editIpAddress.getText().toString(), PORT);
                     new HostConnectionTask().execute();
                 }
             }
